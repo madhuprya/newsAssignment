@@ -1,0 +1,53 @@
+.paginate ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 30px 0px 0px;
+}
+
+.pageLink {
+    padding: 10px;
+    color: #555;
+    cursor: pointer;
+}
+
+.activeLink {
+    color: black;
+}
+
+.paginate ul li a {
+    padding: 8px 15px;
+}
+
+.active a {
+    background-color: rgb(229, 229, 229);
+    border-radius: 5px;
+}
+
+.next a {
+    background-color: #555;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.next {
+    margin-left: auto;
+}
+
+.prev {
+    margin-right: auto;
+}
+
+.prev a {
+    background-color: #555;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.break a {
+    cursor: pointer;
+}

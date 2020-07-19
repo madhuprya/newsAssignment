@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import NewsHeader from "../Header/NewsHeader";
 import TopNews from "../TopNews/TopNews";
@@ -10,8 +10,10 @@ import {
   pagination,
   loadNewsData,
 } from "../../Actions/NewsDetail";
-import { Card, Row, Col } from "antd";
+import { Layout, Card, Row, Col, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+const { Title } = Typography;
+const { Header } = Layout;
 
 const { Meta } = Card;
 class HomePage extends Component {
@@ -56,7 +58,7 @@ class HomePage extends Component {
     const { hasMoreNews } = props;
     return (
       <InfiniteScroll
-        dataLength={newsArr.length}
+        dataLength={newsArr && newsArr.length}
         next={loadNews}
         hasMore={hasMoreNews}
         scrollThreshold={0.8}
@@ -94,12 +96,22 @@ class HomePage extends Component {
   render() {
     const { state, props, showNewsCard } = this;
     const {} = state;
-    const { news } = props;
+    const { news, newsProvider } = props;
     return (
       <>
         <NewsHeader />
         <TopNews />
-        <div id="scrollableDiv">{showNewsCard(news)}</div>
+        <Header
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            height: "100%",
+            alignItems: "center",
+          }}
+        >
+          <Title level={4}>All articles published by {newsProvider}</Title>
+        </Header>
+        <div>{showNewsCard(news)}</div>
       </>
     );
   }
@@ -112,6 +124,7 @@ const mapStateToProps = (state) => ({
   newsSourceId: state.newsDetail.newsSourceId,
   page: state.newsDetail.page,
   hasMoreNews: state.newsDetail.hasMoreNews,
+  newsProvider: state.newsDetail.newsProvider,
 });
 
 export default connect(mapStateToProps, {

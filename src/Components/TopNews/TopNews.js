@@ -42,31 +42,32 @@ export default function TopNews() {
     };
     return (
       <Carousel {...settings}>
-        {topNews.map((news) => {
-          const { urlToImage, description, title } = news;
-          return (
-            <Card
-              loading={false}
-              hoverable
-              cover={<img alt={title} src={urlToImage} />}
-              bodyStyle={{
-                padding: "10%",
-                position: "absolute",
-                top: "0px",
-                zIndex: 10,
-                width: "100%",
-                background: "rgba(1, 1, 1, 0.5)",
-                height: "100%",
-              }}
-            >
-              <Meta
-                className="slick-card-body"
-                title={title}
-                description={description}
-              />
-            </Card>
-          );
-        })}
+        {topNews &&
+          topNews.map((news) => {
+            const { urlToImage, description, title } = news;
+            return (
+              <Card
+                loading={false}
+                hoverable
+                cover={<img alt={title} src={urlToImage} />}
+                bodyStyle={{
+                  padding: "10%",
+                  position: "absolute",
+                  top: "0px",
+                  zIndex: 10,
+                  width: "100%",
+                  background: "rgba(1, 1, 1, 0.5)",
+                  height: "100%",
+                }}
+              >
+                <Meta
+                  className="slick-card-body"
+                  title={title}
+                  description={description}
+                />
+              </Card>
+            );
+          })}
       </Carousel>
     );
   };

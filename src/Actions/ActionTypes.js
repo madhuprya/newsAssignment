@@ -7,3 +7,4 @@ export const SET_SOURCE = "SET_SOURCE";
 export const INCREMENT_PAGE = "INCREMENT_PAGE";
 export const LOAD_NEWS = "LOAD_NEWS";
 export const LOAD_NEWS_FAIL = "LOAD_NEWS_FAIL";
+export const NEWS_SOURCE_PAGINATION = "NEWS_SOURCE_PAGINATION";

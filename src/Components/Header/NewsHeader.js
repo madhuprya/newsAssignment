@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Pagination from "../Pagination/Pagination";
 import { Layout, Drawer, Button, Input, Row, Col, Typography } from "antd";
 import { SearchOutlined, GlobalOutlined } from "@ant-design/icons";
 import {
   getTopNewsFromProvider,
   getnewsFromProvider,
+  updatePagination,
 } from "../../Actions/NewsDetail";
+import { newsProviderPerPage } from "../../ConfigUI/configEnv";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -15,7 +18,11 @@ export default function NewsHeader() {
   const [visible, setVisible] = useState(false);
   const newsSources = useSelector((state) => state.newsDetail.newsSources),
     filteredSource = useSelector((state) => state.newsDetail.filteredSource),
-    newsProvider = useSelector((state) => state.newsDetail.newsProvider);
+    newsProvider = useSelector((state) => state.newsDetail.newsProvider),
+    currentPageNumber = useSelector(
+      (state) => state.newsDetail.currentPageNumber
+    ),
+    PagedNewsSource = useSelector((state) => state.newsDetail.PagedNewsSource);
   const dispatch = useDispatch();
   const showDrawer = () => {
     setVisible(true);
@@ -33,10 +40,10 @@ export default function NewsHeader() {
       payload: filterSource,
     });
   };
-  const getNewsFromSource = (id, domain, page) => {
+  const getNewsFromSource = (id, domain, name) => {
     const data = {
       domain: domain,
-      page: page,
+      page: 1,
     };
     dispatch({
       type: "SET_SOURCE",
@@ -45,10 +52,14 @@ export default function NewsHeader() {
         domain: domain,
         page: 1,
         hasMoreNews: true,
+        newsProvider: name,
       },
     });
     dispatch(getTopNewsFromProvider(id));
     dispatch(getnewsFromProvider(data));
+  };
+  const handlePageClick = (e) => {
+    dispatch(updatePagination(e.selected + 1));
   };
   const getSourceList = (newsSources) => {
     return (
@@ -78,7 +89,7 @@ export default function NewsHeader() {
                 domain={domainName}
                 style={{ width: "100%" }}
                 onClick={() => {
-                  getNewsFromSource(id, domainName, 1);
+                  getNewsFromSource(id, domainName, name);
                 }}
               >
                 {name}
@@ -132,9 +143,15 @@ export default function NewsHeader() {
         closable={true}
         onClose={onClose}
         visible={visible}
-        destroyOnClose={true}
       >
-        {getSourceList(filteredSource)}
+        {getSourceList(PagedNewsSource)}
+        {filteredSource && filteredSource.length > 6 ? (
+          <Pagination
+            currentPageNumber={currentPageNumber}
+            handlePageClick={handlePageClick}
+            totalNewsProvider={filteredSource.length}
+          />
+        ) : null}
       </Drawer>
     </Layout>
   );

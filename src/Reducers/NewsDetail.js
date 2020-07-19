@@ -8,7 +8,9 @@ import {
   INCREMENT_PAGE,
   LOAD_NEWS,
   LOAD_NEWS_FAIL,
+  NEWS_SOURCE_PAGINATION,
 } from "../Actions/ActionTypes";
+import { newsProviderPerPage } from "../ConfigUI/configEnv";
 import updateState from "../Store/Helper";
 
 const initialState = {
@@ -21,11 +23,23 @@ const initialState = {
   page: 1,
   hasMoreNews: true,
   newsProvider: "The Next Web",
+  currentPageNumber: 2,
+  PagedNewsSource: [],
+};
+
+const paginationUpdate = (data, count, page) => {
+  if (data.length < count) {
+    return data.slice(0);
+  } else if (data.length < page * count) {
+    return data.slice((page - 1) * count);
+  } else {
+    return data.slice((page - 1) * count, page * count);
+  }
 };
 
 export default function (state = initialState, action) {
   const { payload } = action;
-  const { news } = state;
+  const { news, currentPageNumber, filteredSource } = state;
   switch (action.type) {
     case NO_DATA:
       return {
@@ -37,6 +51,9 @@ export default function (state = initialState, action) {
         ...state,
         newsSources: [...payload],
         filteredSource: [...payload],
+        PagedNewsSource: [
+          ...paginationUpdate(payload, newsProviderPerPage, currentPageNumber),
+        ],
       };
     case GET_TOP_NEWS:
       return {
@@ -52,6 +69,9 @@ export default function (state = initialState, action) {
       return {
         ...state,
         filteredSource: [...payload],
+        PagedNewsSource: [
+          ...paginationUpdate(payload, newsProviderPerPage, currentPageNumber),
+        ],
       };
     case SET_SOURCE:
       return {
@@ -60,6 +80,7 @@ export default function (state = initialState, action) {
         sourceDomain: payload.domain,
         page: payload.page,
         hasMoreNews: payload.hasMoreNews,
+        newsProvider: payload.newsProvider,
       };
     case INCREMENT_PAGE:
       return {
@@ -75,6 +96,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         hasMoreNews: false,
+      };
+    case NEWS_SOURCE_PAGINATION:
+      return {
+        ...state,
+        PagedNewsSource: [
+          ...paginationUpdate(filteredSource, newsProviderPerPage, payload),
+        ],
+        currentPageNumber: payload,
       };
     default:
       return state;

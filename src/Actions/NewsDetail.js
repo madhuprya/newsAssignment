@@ -6,6 +6,7 @@ import {
   INCREMENT_PAGE,
   LOAD_NEWS,
   LOAD_NEWS_FAIL,
+  NEWS_SOURCE_PAGINATION,
 } from "./ActionTypes";
 import {
   allSourceAvailable,
@@ -104,4 +105,11 @@ export const loadNewsData = (data) => (dispatch) => {
         type: LOAD_NEWS_FAIL,
       });
     });
+};
+
+export const updatePagination = (data) => (dispatch) => {
+  dispatch({
+    type: NEWS_SOURCE_PAGINATION,
+    payload: data,
+  });
 };
