@@ -3,6 +3,9 @@ import {
   NO_DATA,
   GET_NEWS_BY_PROVIDER,
   GET_TOP_NEWS,
+  INCREMENT_PAGE,
+  LOAD_NEWS,
+  LOAD_NEWS_FAIL,
 } from "./ActionTypes";
 import {
   allSourceAvailable,
@@ -68,6 +71,37 @@ export const getTopNewsFromProvider = (data) => (dispatch) => {
     .catch((error) => {
       dispatch({
         type: NO_DATA,
+      });
+    });
+};
+
+export const pagination = (data) => (dispatch) => {
+  dispatch({
+    type: INCREMENT_PAGE,
+    payload: data,
+  });
+};
+
+export const loadNewsData = (data) => (dispatch) => {
+  axios({
+    method: "GET",
+    url: `${baseURL}${newsBySource}`,
+    params: {
+      domains: data.domain,
+      apiKey: newsApiToken,
+      pageSize: 8,
+      page: data.page,
+    },
+  })
+    .then((res) =>
+      dispatch({
+        type: LOAD_NEWS,
+        payload: res.data.articles,
+      })
+    )
+    .catch((error) => {
+      dispatch({
+        type: LOAD_NEWS_FAIL,
       });
     });
 };

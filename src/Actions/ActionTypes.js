@@ -4,3 +4,6 @@ export const GET_NEWS_BY_PROVIDER = "GET_NEWS_BY_PROVIDER";
 export const GET_TOP_NEWS = "GET_TOP_NEWS";
 export const GET_FILTERED_SOURCES = "GET_FILTERED_SOURCES";
 export const SET_SOURCE = "SET_SOURCE";
+export const INCREMENT_PAGE = "INCREMENT_PAGE";
+export const LOAD_NEWS = "LOAD_NEWS";
+export const LOAD_NEWS_FAIL = "LOAD_NEWS_FAIL";

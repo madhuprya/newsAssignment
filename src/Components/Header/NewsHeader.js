@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Layout, Drawer, Button, Input, Row, Col } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Layout, Drawer, Button, Input, Row, Col, Typography } from "antd";
+import { SearchOutlined, GlobalOutlined } from "@ant-design/icons";
 import {
   getTopNewsFromProvider,
   getnewsFromProvider,
@@ -9,23 +9,20 @@ import {
 
 const { Header } = Layout;
 const { Search } = Input;
+const { Title } = Typography;
+
 export default function NewsHeader() {
   const [visible, setVisible] = useState(false);
-  const newsSources = useSelector((state) => state.newsDetail.newsSources);
-  const filteredSource = useSelector(
-    (state) => state.newsDetail.filteredSource
-  );
-
+  const newsSources = useSelector((state) => state.newsDetail.newsSources),
+    filteredSource = useSelector((state) => state.newsDetail.filteredSource),
+    newsProvider = useSelector((state) => state.newsDetail.newsProvider);
   const dispatch = useDispatch();
-
   const showDrawer = () => {
     setVisible(true);
   };
-
   const onClose = () => {
     setVisible(false);
   };
-
   const handleSearch = (newsSources, e) => {
     const { value } = e.target;
     const filterSource = newsSources.filter((source) => {
@@ -36,11 +33,20 @@ export default function NewsHeader() {
       payload: filterSource,
     });
   };
-  const getNewsFromSource = (id, domain) => {
+  const getNewsFromSource = (id, domain, page) => {
     const data = {
       domain: domain,
-      page: 1,
+      page: page,
     };
+    dispatch({
+      type: "SET_SOURCE",
+      payload: {
+        id: id,
+        domain: domain,
+        page: 1,
+        hasMoreNews: true,
+      },
+    });
     dispatch(getTopNewsFromProvider(id));
     dispatch(getnewsFromProvider(data));
   };
@@ -72,7 +78,7 @@ export default function NewsHeader() {
                 domain={domainName}
                 style={{ width: "100%" }}
                 onClick={() => {
-                  getNewsFromSource(id, domainName);
+                  getNewsFromSource(id, domainName, 1);
                 }}
               >
                 {name}
@@ -96,11 +102,13 @@ export default function NewsHeader() {
         <div
           style={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
             height: "100%",
             alignItems: "center",
           }}
         >
+          <GlobalOutlined />
+          <Title level={4}>Top headlines from {newsProvider}</Title>
           <Button
             icon={<SearchOutlined />}
             onClick={showDrawer}
