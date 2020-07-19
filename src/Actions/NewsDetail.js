@@ -1,14 +1,26 @@
-import { GET_SOURCES, NO_DATA, GET_NEWS_BY_PROVIDER } from "./ActionTypes";
-import { allSourceAvailable, newsBySource } from "../ConfigUI/newsAPI";
+import {
+  GET_SOURCES,
+  NO_DATA,
+  GET_NEWS_BY_PROVIDER,
+  GET_TOP_NEWS,
+} from "./ActionTypes";
+import {
+  allSourceAvailable,
+  newsBySource,
+  topHeadlinesFromSource,
+} from "../ConfigUI/newsAPI";
+import axios from "axios";
 import { baseURL, newsApiToken } from "../ConfigUI/configEnv";
-const apiToken = `&apiKey=${newsApiToken}`;
 export const getAllNewsSourceAvailable = () => (dispatch) => {
-  fetch(`${baseURL}${allSourceAvailable}${newsApiToken}`)
-    .then((res) => res.json())
+  axios({
+    method: "GET",
+    url: `${baseURL}${allSourceAvailable}`,
+    params: { apiKey: newsApiToken },
+  })
     .then((res) =>
       dispatch({
         type: GET_SOURCES,
-        payload: res.sources,
+        payload: res.data.sources,
       })
     )
     .catch((error) => {
@@ -19,12 +31,38 @@ export const getAllNewsSourceAvailable = () => (dispatch) => {
 };
 
 export const getnewsFromProvider = (data) => (dispatch) => {
-  fetch(`${baseURL}${newsBySource}${data}${apiToken}`)
-    .then((res) => res.json())
+  axios({
+    method: "GET",
+    url: `${baseURL}${newsBySource}`,
+    params: {
+      domains: data.domain,
+      apiKey: newsApiToken,
+      pageSize: 8,
+      page: data.page,
+    },
+  })
     .then((res) =>
       dispatch({
         type: GET_NEWS_BY_PROVIDER,
-        payload: res.articles,
+        payload: res.data.articles,
+      })
+    )
+    .catch((error) => {
+      dispatch({
+        type: NO_DATA,
+      });
+    });
+};
+export const getTopNewsFromProvider = (data) => (dispatch) => {
+  axios({
+    method: "GET",
+    url: `${baseURL}${topHeadlinesFromSource}`,
+    params: { sources: data, apiKey: newsApiToken },
+  })
+    .then((res) =>
+      dispatch({
+        type: GET_TOP_NEWS,
+        payload: res.data.articles,
       })
     )
     .catch((error) => {

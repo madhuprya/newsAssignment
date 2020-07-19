@@ -1,3 +1,3 @@
-export const allSourceAvailable = "sources?apiKey=";
-export const topHeadlinesFromSource = "top-headlines?sources="; //enter news provider id
-export const newsBySource = "everything?domains="; //enter news provider domain
+export const allSourceAvailable = "sources";
+export const topHeadlinesFromSource = "top-headlines"; //enter news provider id
+export const newsBySource = "everything"; //enter news provider domain

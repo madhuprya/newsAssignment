@@ -1,9 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import NewsHeader from "../Header/NewsHeader";
+import TopNews from "../TopNews/TopNews";
 import {
   getAllNewsSourceAvailable,
   getnewsFromProvider,
+  getTopNewsFromProvider,
 } from "../../Actions/NewsDetail";
 import { Card, Row, Col } from "antd";
 const { Meta } = Card;
@@ -19,10 +21,18 @@ class HomePage extends Component {
     const {
       getAllNewsSourceAvailable,
       getnewsFromProvider,
+      getTopNewsFromProvider,
       sourceDomain,
+      newsSourceId,
+      page,
     } = props;
+    const data = {
+      domain: sourceDomain,
+      page: page,
+    };
     getAllNewsSourceAvailable();
-    getnewsFromProvider(sourceDomain);
+    getnewsFromProvider(data);
+    getTopNewsFromProvider(newsSourceId);
   }
 
   showNewsCard = (newsArr) => {
@@ -45,6 +55,7 @@ class HomePage extends Component {
               </Col>
             );
           })}
+        <p>...loading</p>
       </Row>
     );
   };
@@ -56,6 +67,7 @@ class HomePage extends Component {
     return (
       <>
         <NewsHeader />
+        <TopNews />
         {showNewsCard(news)}
       </>
     );
@@ -66,9 +78,12 @@ const mapStateToProps = (state) => ({
   newsSources: state.newsDetail.newsSources,
   news: state.newsDetail.news,
   sourceDomain: state.newsDetail.sourceDomain,
+  newsSourceId: state.newsDetail.newsSourceId,
+  page: state.newsDetail.page,
 });
 
 export default connect(mapStateToProps, {
   getAllNewsSourceAvailable,
   getnewsFromProvider,
+  getTopNewsFromProvider,
 })(HomePage);
