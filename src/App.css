@@ -1,3 +1,18 @@
+@import '~antd/dist/antd.css';
+
 .App {
   text-align: center;
+}
+
+.ant-card-meta-title {
+  font-size: 12px;
+}
+
+.ant-card-meta-description,
+.ant-card-extra {
+  font-size: 10px;
+}
+
+.card-row {
+  margin: 0 !important;
 }
