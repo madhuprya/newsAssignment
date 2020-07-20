@@ -14,7 +14,7 @@ const initialState = {
   newsProvider: "The Next Web",
   currentPageNumber: 2,
   PagedNewsSource: [],
-  checkData: "",
+  checkData: true,
 };
 
 const paginationUpdate = (data, count, page) => {
@@ -34,7 +34,6 @@ export default function (state = initialState, action) {
     case types.NO_DATA:
       return {
         ...state,
-        checkData: "error",
       };
     //   return updateState(state, initialState);
     case types.GET_SOURCES:

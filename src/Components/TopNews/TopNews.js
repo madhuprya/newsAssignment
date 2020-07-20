@@ -1,10 +1,19 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Carousel, Card } from "antd";
+import { getTopNewsFromProvider } from "../../Store/Actions/NewsDetail";
 const { Meta } = Card;
-
 export default function TopNews() {
-  const topNews = useSelector((state) => state.newsDetail.topNews);
+  //store fetch
+  const dispatch = useDispatch(),
+    topNews = useSelector((state) => state.newsDetail.topNews),
+    newsSourceId = useSelector((state) => state.newsDetail.newsSourceId);
+
+  //get Top News data
+  useEffect(() => {
+    dispatch(getTopNewsFromProvider(newsSourceId));
+  }, [newsSourceId]);
+  // carousel
   const showTopNewsCard = (topNews) => {
     const settings = {
       dots: true,
@@ -44,9 +53,10 @@ export default function TopNews() {
       <Carousel {...settings}>
         {topNews &&
           topNews.map((news) => {
-            const { urlToImage, description, title } = news;
+            const { urlToImage, description, title, url } = news;
             return (
               <Card
+                key={url}
                 loading={false}
                 hoverable
                 cover={<img alt={title} src={urlToImage} />}
