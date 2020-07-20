@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { Carousel, Card } from "antd";
 import { getTopNewsFromProvider } from "../../Store/Actions/NewsDetail";
@@ -53,29 +54,30 @@ export default function TopNews() {
       <Carousel {...settings}>
         {topNews &&
           topNews.map((news) => {
-            const { urlToImage, description, title, url } = news;
+            const { urlToImage, description, title, url, author } = news;
             return (
-              <Card
-                key={url}
-                loading={false}
-                hoverable
-                cover={<img alt={title} src={urlToImage} />}
-                bodyStyle={{
-                  padding: "10%",
-                  position: "absolute",
-                  top: "0px",
-                  zIndex: 10,
-                  width: "100%",
-                  background: "rgba(1, 1, 1, 0.5)",
-                  height: "100%",
-                }}
-              >
-                <Meta
-                  className="slick-card-body"
-                  title={title}
-                  description={description}
-                />
-              </Card>
+              <Link href="/newsDetail" as="/newsDetail" key={url}>
+                <Card
+                  loading={false}
+                  hoverable
+                  cover={<img alt={title} src={urlToImage} />}
+                  bodyStyle={{
+                    padding: "10%",
+                    position: "absolute",
+                    top: "0px",
+                    zIndex: 10,
+                    width: "100%",
+                    background: "rgba(1, 1, 1, 0.5)",
+                    height: "100%",
+                  }}
+                >
+                  <Meta
+                    className="slick-card-body"
+                    title={title}
+                    description={description}
+                  />
+                </Card>
+              </Link>
             );
           })}
       </Carousel>

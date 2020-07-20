@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Link from "next/link";
 import {
   loadNewsData,
   pagination,
@@ -58,17 +59,30 @@ export default function NewsSection() {
         <Row gutter={[8, 24]} className="card-row">
           {newsArr &&
             newsArr.map((news) => {
-              const { urlToImage, description, title, publishedAt, url } = news;
+              const {
+                urlToImage,
+                description,
+                title,
+                publishedAt,
+                url,
+                author,
+              } = news;
               return (
                 <Col className="gutter-row" span={4} key={url}>
-                  <Card
-                    loading={false}
-                    hoverable
-                    cover={<img alt={title} src={urlToImage} />}
-                    extra={`Published At: ${publishedAt.substring(0, 10)}`}
+                  <Link
+                    href={`/news/?author=${author.split("").join("-")}`}
+                    as={`/news/${author.split("").join("-")}`}
+                    key={url}
                   >
-                    <Meta title={title} description={description} />
-                  </Card>
+                    <Card
+                      loading={false}
+                      hoverable
+                      cover={<img alt={title} src={urlToImage} />}
+                      extra={`Published At: ${publishedAt.substring(0, 10)}`}
+                    >
+                      <Meta title={title} description={description} />
+                    </Card>
+                  </Link>
                 </Col>
               );
             })}

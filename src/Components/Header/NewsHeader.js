@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Link from "next/link";
 import Pagination from "../Pagination/Pagination";
 import { Layout, Drawer, Button, Input, Row, Col, Typography } from "antd";
 import { SearchOutlined, GlobalOutlined } from "@ant-design/icons";
@@ -100,16 +101,22 @@ export default function NewsHeader() {
           });
           return (
             <Col className="gutter-row" span={6} key={id}>
-              <Button
-                key={id}
-                domain={domainName}
-                style={{ width: "100%" }}
-                onClick={() => {
-                  getNewsFromSource(id, domainName, name);
-                }}
+              <Link
+                href={`/source?source_name=${id}`}
+                as={`/source/${id}`}
+                key={url}
               >
-                {name}
-              </Button>
+                <Button
+                  key={id}
+                  domain={domainName}
+                  style={{ width: "100%" }}
+                  onClick={() => {
+                    getNewsFromSource(id, domainName, name);
+                  }}
+                >
+                  {name}
+                </Button>
+              </Link>
             </Col>
           );
         })}
