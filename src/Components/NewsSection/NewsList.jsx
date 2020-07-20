@@ -9,7 +9,7 @@ import {
   getTopNewsFromProvider,
   pagination,
   loadNewsData,
-} from "../../Actions/NewsDetail";
+} from "../../Store/Actions/NewsDetail";
 import { Layout, Card, Row, Col, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 const { Title } = Typography;
@@ -37,7 +37,7 @@ class HomePage extends Component {
       domain: sourceDomain,
       page: page,
     };
-    getAllNewsSourceAvailable();
+    // getAllNewsSourceAvailable();
     getnewsFromProvider(data);
     getTopNewsFromProvider(newsSourceId);
   }

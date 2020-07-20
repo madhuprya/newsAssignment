@@ -7,8 +7,7 @@ import {
   getTopNewsFromProvider,
   getnewsFromProvider,
   updatePagination,
-} from "../../Actions/NewsDetail";
-import { newsProviderPerPage } from "../../ConfigUI/configEnv";
+} from "../../Store/Actions/NewsDetail";
 
 const { Header } = Layout;
 const { Search } = Input;

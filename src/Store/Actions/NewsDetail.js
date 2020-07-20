@@ -1,35 +1,27 @@
-import {
-  GET_SOURCES,
-  NO_DATA,
-  GET_NEWS_BY_PROVIDER,
-  GET_TOP_NEWS,
-  INCREMENT_PAGE,
-  LOAD_NEWS,
-  LOAD_NEWS_FAIL,
-  NEWS_SOURCE_PAGINATION,
-} from "./ActionTypes";
+import * as types from "./ActionTypes";
 import {
   allSourceAvailable,
   newsBySource,
   topHeadlinesFromSource,
-} from "../ConfigUI/newsAPI";
+} from "../../ConfigUI/newsAPI";
 import axios from "axios";
-import { baseURL, newsApiToken } from "../ConfigUI/configEnv";
+import { baseURL, newsApiToken } from "../../ConfigUI/configEnv";
 export const getAllNewsSourceAvailable = () => (dispatch) => {
   axios({
     method: "GET",
     url: `${baseURL}${allSourceAvailable}`,
     params: { apiKey: newsApiToken },
   })
+    .then((res) => res.data)
     .then((res) =>
       dispatch({
-        type: GET_SOURCES,
-        payload: res.data.sources,
+        type: types.GET_SOURCES,
+        payload: res.sources,
       })
     )
     .catch((error) => {
       dispatch({
-        type: NO_DATA,
+        type: types.NO_DATA,
       });
     });
 };
@@ -47,13 +39,13 @@ export const getnewsFromProvider = (data) => (dispatch) => {
   })
     .then((res) =>
       dispatch({
-        type: GET_NEWS_BY_PROVIDER,
+        type: types.GET_NEWS_BY_PROVIDER,
         payload: res.data.articles,
       })
     )
     .catch((error) => {
       dispatch({
-        type: NO_DATA,
+        type: types.NO_DATA,
       });
     });
 };
@@ -65,20 +57,20 @@ export const getTopNewsFromProvider = (data) => (dispatch) => {
   })
     .then((res) =>
       dispatch({
-        type: GET_TOP_NEWS,
+        type: types.GET_TOP_NEWS,
         payload: res.data.articles,
       })
     )
     .catch((error) => {
       dispatch({
-        type: NO_DATA,
+        type: types.NO_DATA,
       });
     });
 };
 
 export const pagination = (data) => (dispatch) => {
   dispatch({
-    type: INCREMENT_PAGE,
+    type: types.INCREMENT_PAGE,
     payload: data,
   });
 };
@@ -96,20 +88,20 @@ export const loadNewsData = (data) => (dispatch) => {
   })
     .then((res) =>
       dispatch({
-        type: LOAD_NEWS,
+        type: types.LOAD_NEWS,
         payload: res.data.articles,
       })
     )
     .catch((error) => {
       dispatch({
-        type: LOAD_NEWS_FAIL,
+        type: types.LOAD_NEWS_FAIL,
       });
     });
 };
 
 export const updatePagination = (data) => (dispatch) => {
   dispatch({
-    type: NEWS_SOURCE_PAGINATION,
+    type: types.NEWS_SOURCE_PAGINATION,
     payload: data,
   });
 };
