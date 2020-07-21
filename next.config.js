@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = {
+  distDir: "build",
   webpack: function (config) {
     cssModules: true,
       config.module.rules.push({

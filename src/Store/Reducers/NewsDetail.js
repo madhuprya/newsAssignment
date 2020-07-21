@@ -118,11 +118,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         topNewsError: true,
+        topNewsLoading: false,
       };
     case types.NEWS_SECTION_ERROR:
       return {
         ...state,
         newsSectionError: true,
+        newsSectionLoading: false,
       };
     case types.NEWS_SOURCE_ERROR:
       return {
