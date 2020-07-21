@@ -33,14 +33,6 @@
     font-size: 24px;
 }
 
-.LoadIcon {
-    font-size: 50px;
-    text-align: center;
-    color: #1890ff;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-}
 
 .headTitle {
     color: #1890ff !important;
@@ -102,14 +94,64 @@
     cursor: pointer;
 }
 
+.cardData .ant-card-extra {
+    text-align: right;
+    font-size: 10px;
+}
+
+.metaData .ant-card-meta-title {
+    font-size: 10px;
+}
+
+.metaData .ant-card-meta-description {
+    font-size: 10px;
+}
+
 /* //top news */
 .slickMeta .ant-card-meta-title {
-    font-size: 16px;
+    font-size: 20px;
     color: #fff;
     font-weight: bold;
 }
 
 .slickMeta .ant-card-meta-description {
-    font-size: 12px;
+    font-size: 14px;
     color: #fff;
+}
+
+.newsDetailContainer {
+    padding: 0 20px;
+}
+
+.loaderContainer {
+    height: 250px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+    margin: 20px 5%;
+}
+
+.loaderWrapper {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    text-align: center;
+
+}
+
+.loaderIcon {
+    font-size: 50px;
+    color: #1890ff;
+}
+
+.loaderText {
+    font-size: 14px;
+    color: #1890ff;
+}
+
+.errorText {
+    font-size: 14px;
+    color: rgb(184, 53, 53);
+    text-align: center;
+    margin: 30%;
 }

@@ -176,12 +176,16 @@ export default function NewsHeader() {
           visible={visible}
         >
           {newsSourceLoading ? (
-            <Typography>
-              <LoadingOutlined className="loadIcon" />
-              <Text> News Source Provider Loading...</Text>
+            <Typography className="loaderContainer">
+              <div className="loaderWrapper">
+                <LoadingOutlined className="loaderIcon" />
+                <Text className="loaderText">
+                  News Source Provider Loading...
+                </Text>
+              </div>
             </Typography>
           ) : newsSourceError ? (
-            <Text>Something went wrong!!</Text>
+            <Text className="errorText">Something went wrong!!</Text>
           ) : (
             getSourceList(PagedNewsSource)
           )}

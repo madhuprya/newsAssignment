@@ -65,7 +65,7 @@ export default function TopNews() {
                 hoverable
                 cover={<img alt={title} src={urlToImage} />}
                 bodyStyle={{
-                  padding: "10%",
+                  padding: "15%",
                   position: "absolute",
                   top: "0px",
                   zIndex: 10,
@@ -88,12 +88,14 @@ export default function TopNews() {
   return (
     <div>
       {topNewsLoading ? (
-        <Typography>
-          <LoadingOutlined className="loadIcon" />
-          <Text> Top News Loading...</Text>
+        <Typography className="loaderContainer">
+          <div className="loaderWrapper">
+            <LoadingOutlined className="loaderIcon" />
+            <Text className="loaderText">Top News Loading...</Text>
+          </div>
         </Typography>
       ) : topNewsError ? (
-        <Text>Something went wrong!!</Text>
+        <Text className="errorText">Something went wrong!!</Text>
       ) : (
         showTopNewsCard(topNews)
       )}

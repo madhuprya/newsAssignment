@@ -21,7 +21,6 @@ export default function NewsSection() {
     hasMoreNews = useSelector((state) => state.newsDetail.hasMoreNews),
     page = useSelector((state) => state.newsDetail.page),
     sourceDomain = useSelector((state) => state.newsDetail.sourceDomain),
-    loading = useSelector((state) => state.newsDetail.loading),
     newsSectionLoading = useSelector(
       (state) => state.newsDetail.newsSectionLoading
     ),
@@ -59,7 +58,7 @@ export default function NewsSection() {
         hasMore={hasMoreNews}
         scrollThreshold={0.8}
         endMessage={
-          <p style={{ textAlign: "center" }}>
+          <p className="errorText">
             <b>Yay! You have seen it all</b>
           </p>
         }
@@ -83,9 +82,14 @@ export default function NewsSection() {
                       loading={false}
                       hoverable
                       cover={<img alt={title} src={urlToImage} />}
-                      extra={`Published At: ${publishedAt.substring(0, 10)}`}
+                      extra={`Published On: ${publishedAt.substring(0, 10)}`}
+                      className="cardData"
                     >
-                      <Meta title={title} description={description} />
+                      <Meta
+                        title={title}
+                        description={description}
+                        className="metaData"
+                      />
                     </Card>
                   </Col>
                 </Link>
@@ -97,20 +101,18 @@ export default function NewsSection() {
   };
   // hook returns
   return (
-    <Content>
-      {loading ? (
-        <LoadingOutlined
-          className="LoadIcon"
-          style={{
-            fontSize: "50px",
-            color: "#1890ff",
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-          }}
-        />
+    <>
+      {newsSectionLoading ? (
+        <Typography className="loaderContainer">
+          <div className="loaderWrapper">
+            <LoadingOutlined className="loaderIcon" />
+            <Text className="loaderText">News Section Loading...</Text>
+          </div>
+        </Typography>
+      ) : newsSectionError ? (
+        <Text className="errorText">Something went wrong!!</Text>
       ) : (
-        <>
+        <Content>
           <Header
             style={{
               display: "flex",
@@ -123,18 +125,9 @@ export default function NewsSection() {
               All articles published by {newsProvider}
             </Title>
           </Header>
-          {newsSectionLoading ? (
-            <Typography>
-              <LoadingOutlined className="loadIcon" />
-              <Text> News Section Loading...</Text>
-            </Typography>
-          ) : newsSectionError ? (
-            <Text>Something went wrong!!</Text>
-          ) : (
-            showNewsCard(news)
-          )}
-        </>
+          {showNewsCard(news)}
+        </Content>
       )}
-    </Content>
+    </>
   );
 }
