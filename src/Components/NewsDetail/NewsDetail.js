@@ -7,24 +7,31 @@ const { Meta } = Card;
 export default function NewsDetail() {
   //store fetch
   const newsDetail = useSelector((state) => state.newsDetail.newsDetail);
-  const { author, title, urlToImage, source, url, publishedAt } = newsDetail;
   return (
     <div className="newsDetailContainer">
       {newsDetail ? (
         <Typography>
           <Col>
-            <Title>{title}</Title>
-            {author ? <Text>By {author}</Text> : null}
+            <Title>{newsDetail.title}</Title>
+            {newsDetail.author ? <Text>By {newsDetail.author}</Text> : null}
           </Col>
           <Col>
             <Col>
               <Card
                 style={{ width: 350 }}
-                cover={<img src={urlToImage} alt={source.name} />}
+                cover={
+                  <img
+                    src={newsDetail.urlToImage}
+                    alt={newsDetail.source.name}
+                  />
+                }
               >
                 <Meta
-                  title={`Published On: ${publishedAt.substring(0, 10)}`}
-                  description={<a href={url}>{url}</a>}
+                  title={`Published On: ${newsDetail.publishedAt.substring(
+                    0,
+                    10
+                  )}`}
+                  description={<a href={newsDetail.url}>{newsDetail.url}</a>}
                   className="metaData"
                 />
               </Card>
