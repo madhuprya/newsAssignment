@@ -1,10 +1,23 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Carousel, Card } from "antd";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Carousel, Card, Typography } from "antd";
+import { getTopNewsFromProvider } from "../../Store/Actions/NewsDetail";
+import { LoadingOutlined } from "@ant-design/icons";
+const { Text } = Typography;
 const { Meta } = Card;
-
 export default function TopNews() {
-  const topNews = useSelector((state) => state.newsDetail.topNews);
+  //store fetch
+  const dispatch = useDispatch(),
+    topNews = useSelector((state) => state.newsDetail.topNews),
+    newsSourceId = useSelector((state) => state.newsDetail.newsSourceId),
+    topNewsLoading = useSelector((state) => state.newsDetail.topNewsLoading),
+    topNewsError = useSelector((state) => state.newsDetail.topNewsError);
+  //get Top News data
+  useEffect(() => {
+    dispatch(getTopNewsFromProvider(newsSourceId));
+  }, [newsSourceId]);
+
+  // carousel
   const showTopNewsCard = (topNews) => {
     const settings = {
       dots: true,
@@ -44,14 +57,15 @@ export default function TopNews() {
       <Carousel {...settings}>
         {topNews &&
           topNews.map((news) => {
-            const { urlToImage, description, title } = news;
+            const { urlToImage, description, title, url } = news;
             return (
               <Card
+                key={url}
                 loading={false}
                 hoverable
                 cover={<img alt={title} src={urlToImage} />}
                 bodyStyle={{
-                  padding: "10%",
+                  padding: "15%",
                   position: "absolute",
                   top: "0px",
                   zIndex: 10,
@@ -61,7 +75,7 @@ export default function TopNews() {
                 }}
               >
                 <Meta
-                  className="slick-card-body"
+                  className="slickMeta"
                   title={title}
                   description={description}
                 />
@@ -71,5 +85,20 @@ export default function TopNews() {
       </Carousel>
     );
   };
-  return <div>{showTopNewsCard(topNews)}</div>;
+  return (
+    <div>
+      {topNewsLoading ? (
+        <Typography className="loaderContainer">
+          <div className="loaderWrapper">
+            <LoadingOutlined className="loaderIcon" />
+            <Text className="loaderText">Top News Loading...</Text>
+          </div>
+        </Typography>
+      ) : topNewsError ? (
+        <Text className="errorText">Something went wrong!!</Text>
+      ) : (
+        showTopNewsCard(topNews)
+      )}
+    </div>
+  );
 }

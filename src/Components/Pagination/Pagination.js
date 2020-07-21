@@ -1,8 +1,6 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 import { newsProviderPerPage } from "../../ConfigUI/configEnv";
-import "./Pagination.css";
-
 const Pagination = (props) => {
   const { handlePageClick, totalNewsProvider, currentPageNumber } = props;
   return (
