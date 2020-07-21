@@ -9,7 +9,6 @@ module.exports = {
         use: {
           loader: "file-loader",
           options: {
-            // limit: 100000,
             name: "[name].[ext]",
           },
         },

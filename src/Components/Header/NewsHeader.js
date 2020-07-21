@@ -2,8 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import Pagination from "../Pagination/Pagination";
-import { Layout, Drawer, Button, Input, Row, Col, Typography } from "antd";
-import { SearchOutlined, GlobalOutlined } from "@ant-design/icons";
+import {
+  Layout,
+  Drawer,
+  Button,
+  Input,
+  Row,
+  Col,
+  Typography,
+  Space,
+} from "antd";
+import {
+  SearchOutlined,
+  GlobalOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import {
   getnewsFromProvider,
   updatePagination,
@@ -12,7 +25,7 @@ import {
 
 const { Header } = Layout;
 const { Search } = Input;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 export default function NewsHeader() {
   //store fetch
@@ -22,6 +35,10 @@ export default function NewsHeader() {
     filteredSource = useSelector((state) => state.newsDetail.filteredSource),
     newsProvider = useSelector((state) => state.newsDetail.newsProvider),
     checkData = useSelector((state) => state.newsDetail.checkData),
+    newsSourceLoading = useSelector(
+      (state) => state.newsDetail.newsSourceLoading
+    ),
+    newsSourceError = useSelector((state) => state.newsDetail.newsSourceError),
     currentPageNumber = useSelector(
       (state) => state.newsDetail.currentPageNumber
     ),
@@ -80,7 +97,7 @@ export default function NewsHeader() {
   //get news provider
   const getSourceList = (newsSources) => {
     return (
-      <Row gutter={[8, 24]} className="card-row">
+      <Row gutter={[8, 24]} className="cardRow">
         {newsSources.map((source) => {
           const { category, country, language, url, name, id } = source;
           let domainName = url
@@ -100,7 +117,7 @@ export default function NewsHeader() {
             }
           });
           return (
-            <Col className="gutter-row" span={6} key={id}>
+            <Col className="gutterRow" span={6} key={id}>
               <Link
                 href={`/source?source_name=${id}`}
                 as={`/source/${id}`}
@@ -109,7 +126,7 @@ export default function NewsHeader() {
                 <Button
                   key={id}
                   domain={domainName}
-                  style={{ width: "100%" }}
+                  className="newsSourceBtn"
                   onClick={() => {
                     getNewsFromSource(id, domainName, name);
                   }}
@@ -127,63 +144,56 @@ export default function NewsHeader() {
   //hook returns
   return (
     <>
-      {newsSources ? (
-        <Layout>
-          <Header
-            style={{
-              position: "fixed",
-              zIndex: 1,
-              width: "100%",
-              background: "rgba(255,255,255,0.1)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                height: "100%",
-                alignItems: "center",
-              }}
+      <Layout>
+        <Header className="headerContainer">
+          <Space className="navBar" align="center">
+            <GlobalOutlined className="iconFont" />
+            <Title level={4} className="headTitle">
+              Top Headlines from {newsProvider}
+            </Title>
+            <Button
+              icon={<SearchOutlined />}
+              onClick={showDrawer}
+              type="primary"
+              ghost
             >
-              <GlobalOutlined />
-              <Title level={4}>Top headlines from {newsProvider}</Title>
-              <Button
-                icon={<SearchOutlined />}
-                onClick={showDrawer}
-                type="primary"
-                ghost
-              >
-                News By Provider
-              </Button>
-            </div>
-          </Header>
-          <Drawer
-            title={
-              <Search
-                placeholder="Search News Provider"
-                onChange={(e) => handleSearch(newsSources, e)}
-                style={{ width: "300px" }}
-              />
-            }
-            width={"100%"}
-            placement={"top"}
-            closable={true}
-            onClose={onClose}
-            visible={visible}
-          >
-            {getSourceList(PagedNewsSource)}
-            {filteredSource && filteredSource.length > 6 ? (
-              <Pagination
-                currentPageNumber={currentPageNumber}
-                handlePageClick={handlePageClick}
-                totalNewsProvider={filteredSource.length}
-              />
-            ) : null}
-          </Drawer>
-        </Layout>
-      ) : (
-        <LoadingOutlined className={styles.LoadIcon} />
-      )}
+              News By Provider
+            </Button>
+          </Space>
+        </Header>
+        <Drawer
+          title={
+            <Search
+              placeholder="Search News Provider"
+              onChange={(e) => handleSearch(newsSources, e)}
+              className="navSearch"
+            />
+          }
+          width={"100%"}
+          placement={"top"}
+          closable={true}
+          onClose={onClose}
+          visible={visible}
+        >
+          {newsSourceLoading ? (
+            <Typography>
+              <LoadingOutlined className="loadIcon" />
+              <Text> News Source Provider Loading...</Text>
+            </Typography>
+          ) : newsSourceError ? (
+            <Text>Something went wrong!!</Text>
+          ) : (
+            getSourceList(PagedNewsSource)
+          )}
+          {filteredSource && filteredSource.length > 6 ? (
+            <Pagination
+              currentPageNumber={currentPageNumber}
+              handlePageClick={handlePageClick}
+              totalNewsProvider={filteredSource.length}
+            />
+          ) : null}
+        </Drawer>
+      </Layout>
     </>
   );
 }

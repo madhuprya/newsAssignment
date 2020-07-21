@@ -1,19 +1,22 @@
 import React, { useEffect } from "react";
-import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import { Carousel, Card } from "antd";
+import { Carousel, Card, Typography } from "antd";
 import { getTopNewsFromProvider } from "../../Store/Actions/NewsDetail";
+import { LoadingOutlined } from "@ant-design/icons";
+const { Text } = Typography;
 const { Meta } = Card;
 export default function TopNews() {
   //store fetch
   const dispatch = useDispatch(),
     topNews = useSelector((state) => state.newsDetail.topNews),
-    newsSourceId = useSelector((state) => state.newsDetail.newsSourceId);
-
+    newsSourceId = useSelector((state) => state.newsDetail.newsSourceId),
+    topNewsLoading = useSelector((state) => state.newsDetail.topNewsLoading),
+    topNewsError = useSelector((state) => state.newsDetail.topNewsError);
   //get Top News data
   useEffect(() => {
     dispatch(getTopNewsFromProvider(newsSourceId));
   }, [newsSourceId]);
+
   // carousel
   const showTopNewsCard = (topNews) => {
     const settings = {
@@ -54,34 +57,46 @@ export default function TopNews() {
       <Carousel {...settings}>
         {topNews &&
           topNews.map((news) => {
-            const { urlToImage, description, title, url, author } = news;
+            const { urlToImage, description, title, url } = news;
             return (
-              <Link href="/newsDetail" as="/newsDetail" key={url}>
-                <Card
-                  loading={false}
-                  hoverable
-                  cover={<img alt={title} src={urlToImage} />}
-                  bodyStyle={{
-                    padding: "10%",
-                    position: "absolute",
-                    top: "0px",
-                    zIndex: 10,
-                    width: "100%",
-                    background: "rgba(1, 1, 1, 0.5)",
-                    height: "100%",
-                  }}
-                >
-                  <Meta
-                    className="slick-card-body"
-                    title={title}
-                    description={description}
-                  />
-                </Card>
-              </Link>
+              <Card
+                key={url}
+                loading={false}
+                hoverable
+                cover={<img alt={title} src={urlToImage} />}
+                bodyStyle={{
+                  padding: "10%",
+                  position: "absolute",
+                  top: "0px",
+                  zIndex: 10,
+                  width: "100%",
+                  background: "rgba(1, 1, 1, 0.5)",
+                  height: "100%",
+                }}
+              >
+                <Meta
+                  className="slickMeta"
+                  title={title}
+                  description={description}
+                />
+              </Card>
             );
           })}
       </Carousel>
     );
   };
-  return <div>{showTopNewsCard(topNews)}</div>;
+  return (
+    <div>
+      {topNewsLoading ? (
+        <Typography>
+          <LoadingOutlined className="loadIcon" />
+          <Text> Top News Loading...</Text>
+        </Typography>
+      ) : topNewsError ? (
+        <Text>Something went wrong!!</Text>
+      ) : (
+        showTopNewsCard(topNews)
+      )}
+    </div>
+  );
 }

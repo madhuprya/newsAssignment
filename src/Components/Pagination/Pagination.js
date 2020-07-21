@@ -1,7 +1,6 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 import { newsProviderPerPage } from "../../ConfigUI/configEnv";
-import styles from "./Pagination.module.css";
 const Pagination = (props) => {
   const { handlePageClick, totalNewsProvider, currentPageNumber } = props;
   return (
@@ -15,13 +14,13 @@ const Pagination = (props) => {
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}
-          containerClassName={styles.paginate}
-          breakClassName={styles.break}
-          activeLinkClassName={styles.activeLink}
-          activeClassName={styles.active}
-          previousClassName={styles.prev}
-          nextClassName={styles.next}
-          pageLinkClassName={styles.pageLink}
+          containerClassName="paginate"
+          breakClassName="break"
+          activeLinkClassName="activeLink"
+          activeClassName="active"
+          previousClassName="prev"
+          nextClassName="next"
+          pageLinkClassName="pageLink"
           forcePage={currentPageNumber - 1}
         />
       </span>

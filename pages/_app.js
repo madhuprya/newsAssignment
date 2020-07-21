@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { createWrapper } from "next-redux-wrapper";
 import store from "../src/Store/Store";
 import "antd/dist/antd.css";
+import "../style.css";
 class MyApp extends React.Component {
   static async getInitialProps({ Component, ctx }) {
     return {

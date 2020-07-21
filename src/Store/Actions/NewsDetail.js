@@ -21,7 +21,7 @@ export const getAllNewsSourceAvailable = () => (dispatch) => {
     )
     .catch((error) => {
       dispatch({
-        type: types.NO_DATA,
+        type: types.NEWS_SOURCE_ERROR,
       });
     });
 };
@@ -45,7 +45,7 @@ export const getnewsFromProvider = (data) => (dispatch) => {
     )
     .catch((error) => {
       dispatch({
-        type: types.NO_DATA,
+        type: types.NEWS_SECTION_ERROR,
       });
     });
 };
@@ -63,7 +63,7 @@ export const getTopNewsFromProvider = (data) => (dispatch) => {
     )
     .catch((error) => {
       dispatch({
-        type: types.NO_DATA,
+        type: types.TOP_NEWS_ERROR,
       });
     });
 };
@@ -102,6 +102,13 @@ export const loadNewsData = (data) => (dispatch) => {
 export const updatePagination = (data) => (dispatch) => {
   dispatch({
     type: types.NEWS_SOURCE_PAGINATION,
+    payload: data,
+  });
+};
+
+export const newsDetailRoute = (data) => (dispatch) => {
+  dispatch({
+    type: types.NEWS_DETAIL_ROUTE,
     payload: data,
   });
 };
