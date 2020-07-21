@@ -11,36 +11,22 @@ export default function NewsDetail() {
     <div className="newsDetailContainer">
       {newsDetail ? (
         <Typography>
-          <Col>
-            <Title>{newsDetail.title}</Title>
-            {newsDetail.author ? <Text>By {newsDetail.author}</Text> : null}
-          </Col>
-          <Col>
-            <Col>
-              <Card
-                style={{ width: 350 }}
-                cover={
-                  <img
-                    src={newsDetail.urlToImage}
-                    alt={newsDetail.source.name}
-                  />
-                }
-              >
-                <Meta
-                  title={`Published On: ${newsDetail.publishedAt.substring(
-                    0,
-                    10
-                  )}`}
-                  description={<a href={newsDetail.url}>{newsDetail.url}</a>}
-                  className="metaData"
-                />
-              </Card>
-            </Col>
-            <Paragraph>{newsDetail.content}</Paragraph>
-          </Col>
-          <Col>
-            <Paragraph>{newsDetail.description}</Paragraph>
-          </Col>
+          <Title>{newsDetail.title}</Title>
+          {newsDetail.author ? <Text>By {newsDetail.author}</Text> : null}
+          <Card
+            style={{ width: 350 }}
+            cover={
+              <img src={newsDetail.urlToImage} alt={newsDetail.source.name} />
+            }
+          >
+            <Meta
+              title={`Published On: ${newsDetail.publishedAt.substring(0, 10)}`}
+              description={<a href={newsDetail.url}>{newsDetail.url}</a>}
+              className="metaData"
+            />
+          </Card>
+          <Paragraph>{newsDetail.content}</Paragraph>
+          <Paragraph>{newsDetail.description}</Paragraph>
         </Typography>
       ) : (
         <Typography className="loaderContainer">
