@@ -118,11 +118,7 @@ export default function NewsHeader() {
           });
           return (
             <Col className="gutterRow" span={6} key={id}>
-              <Link
-                href={`/source?source_name=${id}`}
-                as={`/source/${id}`}
-                key={url}
-              >
+              <Link href={`/index`} as={`/source/${id}`} key={url}>
                 <Button
                   key={id}
                   domain={domainName}
